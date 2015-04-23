@@ -18,6 +18,9 @@ MoveHeuristics.shy = function(state) {
     var me = state.getMe();
     if (state.isSafe(me.position))
         value += 1;
+    if (!state.isDanger(me.position)) {
+        value += 1;
+    }
     var othersDist = [];
     for (var i = others.length -1; i>=0 ; i--) {
         var path = state.getPathTo(others[i]);
@@ -156,11 +159,11 @@ BombHeuristics.cautious = function(state) {
         if (Utils.manhattanDistance(me.position,dangers[i]) < 3)
             return false;
     }
-    return true;
+    return Math.random() > 0.95;
 };
 
 BombHeuristics.bold = function(state) {
-    return Math.random() < 0.99;
+    return Math.random() > 0.95;
 };
 
 BombHeuristics.hesitant = function(state) {
@@ -241,6 +244,21 @@ Personalities.Psycho = {
     neutral: {
         move: MoveHeuristics.obsessive,
         bomb: BombHeuristics.pyro
+    }
+};
+
+Personalities.Sneaky = {
+    threatened: {
+        move: MoveHeuristics.shy,
+        bomb: BombHeuristics.passive
+    },
+    walledIn: {
+        move: MoveHeuristics.curious,
+        bomb: BombHeuristics.spleunker
+    },
+    neutral: {
+        move: MoveHeuristics.outgoing,
+        bomb: BombHeuristics.aggressive
     }
 };
 
