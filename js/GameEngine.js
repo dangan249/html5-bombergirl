@@ -3,7 +3,7 @@ GameEngine = Class.extend({
     tilesX: 17,
     tilesY: 13,
     size: {},
-    fps: 200,
+    fps: 100,
     botsCount: 2, /* 0 - 3 */
     playersCount: 2, /* 1 - 2 */
     bonusesPercent: 0,
@@ -179,26 +179,26 @@ GameEngine = Class.extend({
     },
 
     getCurrentGameState: function(bot_id) {
-        return new GameState(this._getBotStates(), this._getTiles(), this._getBombStates(), bot_id);   
+        return new GameState(this._getBotStates(), this._getTiles(), this._getBombStates(), bot_id);
     },
 
     _getBombStates: function() {
         var that = this;
-        return _.map(this.bombs, function(bomb) {   
-            return { 
-                position: bomb.position, 
-                strength: bomb.strength, 
-                timer: bomb.timer, 
+        return _.map(this.bombs, function(bomb) {
+            return {
+                position: bomb.position,
+                strength: bomb.strength,
+                timer: bomb.timer,
                 timerMax: bomb.timerMax,
                 exploded: bomb.exploded,
                 fires: that._getFireStates(bomb)
-            }    
-        });             
+            }
+        });
     },
 
     _getFireStates: function(bomb) {
-        return _.map(bomb.fires, function(fire) {           
-            return { position: fire.position };      
+        return _.map(bomb.fires, function(fire) {
+            return { position: fire.position };
         });
     },
 
@@ -207,35 +207,35 @@ GameEngine = Class.extend({
         for (var j = 0; j < this.tilesX; j++) {
             tiles[j] = [];
             for (var i = 0; i < this.tilesY; i++) {
-                tiles[j][i] = 'grass'; 
+                tiles[j][i] = 'grass';
             }
         }
 
         _.each(this.tiles, function(tile) {
             tiles[tile.position.x][tile.position.y] = tile.material;
-        });   
+        });
 
-        return tiles;        
+        return tiles;
     },
 
 
   _buildPositionToMaterialHash: function(tiles, type) {
     var hash = {};
-    
+
     _.each(tiles, function(tile) {
-      hash[tile.poisition] = type;    
+      hash[tile.poisition] = type;
     });
 
      return hash;
    },
 
     _getBotStates: function() {
-        var that = this; 
+        var that = this;
         return _.map(this.bots, function(bot) {
             return that._extractBotState(bot);
         }).concat(_.map(this.players, function(player) {
             return that._extractBotState(player);
-        }));            
+        }));
     },
 
     _extractBotState: function(bot) {
