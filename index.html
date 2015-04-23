@@ -41,57 +41,62 @@
           <table class="bots-config">
             <tr>
             <td>
-            Shaggy
+            Shaggy<br>
             <select class="bot-config" name="bot-1">
-              <option value="brave">Brave</option>
-              <option value="coward" selected="true">Coward</option>
+              <option value="vanilla" selected="true">Vanilla</option>
+              <option value="macho">Macho</option>
+              <option value="shy">Shy</option>
+              <option value="psycho">Psycho</option>
+              <option value="sneaky">Sneaky</option>
             </select>
             </td>
             <td>
-            Summer
+            Summer<br>
             <select class="bot-config" name="bot-2">
-              <option value="brave">Brave</option>
-              <option value="coward">Coward</option>
+              <option value="vanilla">Vanilla</option>
+              <option value="macho" selected="true">Macho</option>
+              <option value="shy">Shy</option>
+              <option value="psycho">Psycho</option>
+              <option value="sneaky">Sneaky</option>
             </select>
             </td>
             </tr>
             <tr>
             <td>
-            Nymeria
+            Nymeria<br>
             <select class="bot-config" name="bot-3">
-              <option value="brave">Brave</option>
-              <option value="coward" selected="true">Coward</option>
+              <option value="vanilla">Vanilla</option>
+              <option value="macho">Macho</option>
+              <option value="shy" selected="true">Shy</option>
+              <option value="psycho">Psycho</option>
+              <option value="sneaky">Sneaky</option>
             </select>
             </td>
             <td>
             Ghost<br>
             <select class="bot-config" name="bot-4">
-              <option value="brave">Brave</option>
-              <option value="coward">Coward</option>
+              <option value="vanilla">Vanilla</option>
+              <option value="macho">Macho</option>
+              <option value="shy">Shy</option>
+              <option value="psycho" selected="true">Psycho</option>
+              <option value="sneaky">Sneaky</option>
             </select>
             </td>
             </tr>
           </table>
+            Map Density
+            <select class="map-config" name="map">
+              <option value="empty">Empty</option>
+              <option value="low">Low</option>
+              <option value="high" selected="true">High</option>
+              <option value="full">Full</option>
+            </select>
+                 <br><button onClick="gGameEngine.restart()">Restart</button>
         </div>
 
         <div id="game">
             <canvas id="canvas" width="545" height="416"></canvas>
         </div>
-        <h3>How to play</h3>
-        <h4>Player 1</h4>
-        <ul>
-            <li><strong>arrow keys</strong> &hellip; move</li>
-            <li><strong>spacebar / alt</strong> &hellip; plant the bomb</li>
-        </ul>
-        <h4>Player 2</h4>
-        <ul>
-            <li><strong>W, A, S, D</strong> &hellip; move</li>
-            <li> <strong>shift</strong> &hellip; plant the bomb</li>
-        </ul>
-
-        <i><strong>M</strong> &hellip; mute / unmute sound</i><br>
-        <i><strong>enter</strong> &hellip; restart</i><br>
-        <i><strong>escape</strong> &hellip; menu</i>
 
         <hr>
 

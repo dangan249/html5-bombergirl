@@ -16,6 +16,9 @@ GameEngine = Class.extend({
     wallTiles: null,
     bombs: [],
     bonuses: [],
+    draw: true,
+    botsConfig: [],
+    maptype: "high",
 
     playerBoyImg: null,
     playerBoyImg2: null,
@@ -97,9 +100,18 @@ GameEngine = Class.extend({
         this.tiles = [];
         this.bonuses = [];
 
+        gGameEngine.maptype = $('select.map-config').val();
+
         // Draw tiles
         this.drawTiles();
         this.drawBonuses();
+
+        gGameEngine.botsConfig.length = 0;
+
+        $('select.bot-config').each(function () {
+          var value = $(this).val();
+          gGameEngine.botsConfig.push(value);
+        });
 
         this.spawnBots();
         this.spawnPlayers();
@@ -180,11 +192,20 @@ GameEngine = Class.extend({
             bomb.update();
         }
 
+        if (gGameEngine.bots.length == 1) {
+            console.log(gGameEngine.bots[0].id);
+            gGameEngine.restart();
+        } else if (gGameEngine.bots.length == 0) {
+            console.log("no winner");
+            gGameEngine.restart();
+        }
+
         // Menu
         gGameEngine.menu.update();
 
         // Stage
-        gGameEngine.stage.update();
+        if (gGameEngine.draw)
+            gGameEngine.stage.update();
     },
 
     getCurrentGameState: function(bot_id) {
@@ -252,6 +273,7 @@ GameEngine = Class.extend({
     },
 
     drawTiles: function() {
+        // return;
         for (var i = 0; i < this.tilesY; i++) {
             for (var j = 0; j < this.tilesX; j++) {
                 if ((i == 0 || j == 0 || i == this.tilesY - 1 || j == this.tilesX - 1)
@@ -270,7 +292,8 @@ GameEngine = Class.extend({
                         && !(i >= this.tilesY - 3 && j >= this.tilesX - 3)
                         && !(i <= 2 && j >= this.tilesX - 3)
                         && !(i >= this.tilesY - 3 && j <= 2)) {
-                        if (Math.random() >= 0.4){
+                        var types = {"high": 0.3, "low": 0.6, "empty": 1, "full": 0};
+                        if (Math.random() >= types[gGameEngine.maptype]){
                             var wood = new Tile('wood', { x: j, y: i });
                             this.stage.addChild(wood.bmp);
                             this.tiles.push(wood);
@@ -327,24 +350,27 @@ GameEngine = Class.extend({
     spawnBots: function() {
         this.bots = [];
 
+        var personalities = {"vanilla": Personalities.Vanilla, "macho": Personalities.Macho,
+            "psycho": Personalities.Psycho, "shy": Personalities.Shy, "sneaky": Personalities.Shy};
+
         // Spawns the four agents
         if (this.botsCount >= 1) {
             var bot2 = new Agent({ x: 1, y: this.tilesY - 2 });
-            bot2.personality = Personalities.Macho;
+            bot2.personality = personalities[gGameEngine.botsConfig[2]];
             this.bots.push(bot2);
         }
 
         if (this.botsCount >= 2) {
             var bot3 = new Agent({ x: this.tilesX - 2, y: 1 });
             bot3.id = 1;
-            bot3.personality = Personalities.Shy;
+            bot3.personality = personalities[gGameEngine.botsConfig[1]];
             this.bots.push(bot3);
         }
 
         if (this.botsCount >= 3) {
             var bot = new Agent({ x: this.tilesX - 2, y: this.tilesY - 2 });
             bot.id = 2;
-            bot.personality = Personalities.Psycho;
+            bot.personality = personalities[gGameEngine.botsConfig[3]];
             this.bots.push(bot);
             // console.log(this.bots);
             // console.log(jefferson);
@@ -353,7 +379,7 @@ GameEngine = Class.extend({
         if (this.botsCount >= 4) {
             var bot = new Agent({ x: 1, y: 1 });
             bot.id = 3;
-            bot.personality = Personalities.Vanilla;
+            bot.personality = personalities[gGameEngine.botsConfig[0]];
             this.bots.push(bot);
         }
     },
