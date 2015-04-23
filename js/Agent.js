@@ -17,15 +17,17 @@ Agent = Bot.extend({
 
     pickMove: function(heuristic) {
         // var actions = this.getPossibleActions(); // REPLACE WITH AN CODE
+        // console.log("start");
         var maxMove = "idle"; 
         var gs = gGameEngine.getCurrentGameState(this.id);
         var actions = gs.getPossibleActionsForBot(this.id);
-        var maxScore = heuristic(gs.generateSuccessor(this.id, "idle"));
+        var maxScore = heuristic(gs.generateSuccessor(this.id, "idle")) - 1;
         // console.log("start");
         for (var i = actions.length - 1; i >= 0; i--) {
             // console.log(gs.generateSuccessor(this.id, act).getMe().position);
             // console.log(this.position);
             var act = actions[i];
+            // console.log(act);
             var score = heuristic(gs.generateSuccessor(this.id, act));
             if (score >= maxScore) {
                 maxScore = score;
@@ -46,6 +48,7 @@ Agent = Bot.extend({
         }
 
         var position = { x: this.bmp.x, y: this.bmp.y };
+        var pos2 = { x: this.bmp.x, y: this.bmp.y };
 
         // AI
         var currBehavior = this.decideBehavior();
@@ -55,6 +58,7 @@ Agent = Bot.extend({
         // BOMB
         if (this.pickBomb(currBehavior.bomb)) {
             this.plantBomb();
+            return;
         }
 
         // MOVEMENT
@@ -83,7 +87,7 @@ Agent = Bot.extend({
         }
 
         if (position.x != this.bmp.x || position.y != this.bmp.y) {
-            if (!this.detectBombCollision(position)) {
+            if (!this.detectBombCollision(position) || this.detectBombCollision(pos2)) {
                 if (this.detectWallCollision(position)) {
                     // If we are on the corner, move to the aisle
                     var cornerFix = this.getCornerFix(dirX, dirY);

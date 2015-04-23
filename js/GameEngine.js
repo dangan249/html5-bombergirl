@@ -3,10 +3,10 @@ GameEngine = Class.extend({
     tilesX: 17,
     tilesY: 13,
     size: {},
-    fps: 2000,
+    fps: 200,
     botsCount: 2, /* 0 - 3 */
     playersCount: 2, /* 1 - 2 */
-    bonusesPercent: 16,
+    bonusesPercent: 0,
 
     stage: null,
     menu: null,
@@ -261,10 +261,11 @@ GameEngine = Class.extend({
                         && !(i >= this.tilesY - 3 && j >= this.tilesX - 3)
                         && !(i <= 2 && j >= this.tilesX - 3)
                         && !(i >= this.tilesY - 3 && j <= 2)) {
-
-                        var wood = new Tile('wood', { x: j, y: i });
-                        this.stage.addChild(wood.bmp);
-                        this.tiles.push(wood);
+                        if (Math.random() >= 0.4){
+                            var wood = new Tile('wood', { x: j, y: i });
+                            this.stage.addChild(wood.bmp);
+                            this.tiles.push(wood);
+                        }
                     }
                 }
             }
@@ -302,8 +303,8 @@ GameEngine = Class.extend({
                     || (j == 3 && tile.position.x > this.tilesX / 2 && tile.position.y > this.tilesX / 2)) {
 
                     var typePosition = placedCount % 3;
-                    var bonus = new Bonus(tile.position, typePosition);
-                    this.bonuses.push(bonus);
+                    // var bonus = new Bonus(tile.position, typePosition);
+                    //this.bonuses.push(bonus);
 
                     // Move wood to front
                     this.moveToFront(tile.bmp);
@@ -319,7 +320,21 @@ GameEngine = Class.extend({
 
         // Spawns the four agents
         if (this.botsCount >= 1) {
-            var bot2 = new Bot({ x: 1, y: this.tilesY - 2 });
+            var bot2 = new Agent({ x: 1, y: this.tilesY - 2 });
+            bot2.personality = {
+                threatened: {
+                    move: MoveHeuristics.coward,
+                    bomb: BombHeuristics.passive
+                },
+                walledIn: {
+                    move: MoveHeuristics.curious,
+                    bomb: BombHeuristics.spleunker
+                },
+                neutral: {
+                    move: MoveHeuristics.outgoing,
+                    bomb: BombHeuristics.aggressive
+                }
+            };
             this.bots.push(bot2);
         }
 
@@ -328,31 +343,31 @@ GameEngine = Class.extend({
             bot3.id = 1;
             bot3.personality = {
                 threatened: {
-                    move: MoveHeuristics.cautious,
+                    move: MoveHeuristics.coward,
                     bomb: BombHeuristics.passive
                 },
                 walledIn: {
-                    move: MoveHeuristics.cautious,
+                    move: MoveHeuristics.curious,
                     bomb: BombHeuristics.spleunker
                 },
                 neutral: {
-                    move: MoveHeuristics.outgoing,
-                    bomb: BombHeuristics.passive
+                    move: MoveHeuristics.coward,
+                    bomb: BombHeuristics.spleunker
                 }
             };
             this.bots.push(bot3);
         }
 
         if (this.botsCount >= 3) {
-            var bot = new Agent({ x: this.tilesX - 3, y: this.tilesY - 2 });
+            var bot = new Agent({ x: this.tilesX - 2, y: this.tilesY - 2 });
             bot.id = 2;
             bot.personality = {
                 threatened: {
-                    move: MoveHeuristics.cautious,
-                    bomb: BombHeuristics.spleunker
+                    move: MoveHeuristics.coward,
+                    bomb: BombHeuristics.passive
                 },
                 walledIn: {
-                    move: MoveHeuristics.cautious,
+                    move: MoveHeuristics.curious,
                     bomb: BombHeuristics.spleunker
                 },
                 neutral: {
@@ -366,8 +381,22 @@ GameEngine = Class.extend({
         }
 
         if (this.botsCount >= 4) {
-            var bot = new Bot({ x: 1, y: 1 });
+            var bot = new Agent({ x: 1, y: 1 });
             bot.id = 3;
+            bot.personality = {
+                threatened: {
+                    move: MoveHeuristics.coward,
+                    bomb: BombHeuristics.passive
+                },
+                walledIn: {
+                    move: MoveHeuristics.curious,
+                    bomb: BombHeuristics.spleunker
+                },
+                neutral: {
+                    move: MoveHeuristics.shy,
+                    bomb: BombHeuristics.spleunker
+                }
+            };
             this.bots.push(bot);
         }
     },
