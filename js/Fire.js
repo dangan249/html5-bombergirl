@@ -17,6 +17,8 @@ Fire = Entity.extend({
      */
     bmp: null,
 
+    tick:6,
+
     /**
      * The bomb that triggered this fire
      */
@@ -35,9 +37,9 @@ Fire = Entity.extend({
         this.bmp = new createjs.Sprite(spriteSheet);
         this.bmp.gotoAndPlay('idle');
         var that = this;
-        this.bmp.addEventListener('animationend', function() {
-            that.remove();
-        });
+        // this.bmp.addEventListener('animationend', function() {
+        //     that.remove();
+        // });
 
         this.position = position;
 
@@ -49,6 +51,9 @@ Fire = Entity.extend({
     },
 
     update: function() {
+        this.tick -= 1;
+        if (this.tick <= 0)
+            this.remove();
     },
 
     remove: function() {

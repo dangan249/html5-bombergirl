@@ -78,6 +78,9 @@ Bomb = Entity.extend({
     },
 
     update: function() {
+        for (var i = this.fires.length - 1; i >= 0; i--) {
+            this.fires[i].update();
+        };
         if (this.exploded) { return; }
         this.timer++;
         if (this.timer >= this.fuseLength) {

@@ -20,7 +20,7 @@
 */
 
 GameState = Class.extend({
-  POSSIBLE_ACTIONS: ['up', 'down', 'left', 'right', 'bomb'],
+  POSSIBLE_ACTIONS: ['up', 'down', 'left', 'right'],
   bots: [],
   tiles: [],
   bombs: [],

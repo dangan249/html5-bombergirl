@@ -38,6 +38,9 @@ MoveHeuristics.outgoing = function(state) {
     var me = state.getMe();
     if (state.isSafe(me.position))
         value += 1;
+    if (!state.isDanger(me.position)) {
+        value += 1;
+    }
     var othersDist =[];
     for (var i = others.length - 1; i>=0 ; i--) {
         var path = state.getPathTo(others[i]);
@@ -78,6 +81,9 @@ MoveHeuristics.curious = function(state) {
     var me = state.getMe();
     if (state.isSafe(me.position))
         value += 1;
+    if (!state.isDanger(me.position)) {
+        value += 1;
+    }
     var wood = state.getWood();
     var othersDist =[];
     for (var i = wood.length - 1; i>=0 ; i--) {
@@ -195,7 +201,7 @@ Personalities.Vanilla = {
 
 Personalities.Macho = {
     threatened: {
-        move: MoveHeuristics.coward,
+        move: MoveHeuristics.outgoing,
         bomb: BombHeuristics.aggressive
     },
     walledIn: {
@@ -225,7 +231,7 @@ Personalities.Shy = {
 
 Personalities.Psycho = {
     threatened: {
-        move: MoveHeuristics.outgoing,
+        move: MoveHeuristics.obsessive,
         bomb: BombHeuristics.pyro
     },
     walledIn: {
@@ -233,7 +239,7 @@ Personalities.Psycho = {
         bomb: BombHeuristics.spleunker
     },
     neutral: {
-        move: MoveHeuristics.outgoing,
+        move: MoveHeuristics.obsessive,
         bomb: BombHeuristics.pyro
     }
 };
