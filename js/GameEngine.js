@@ -19,6 +19,7 @@ GameEngine = Class.extend({
     draw: true,
     botsConfig: [],
     maptype: "high",
+    gameover: false,
 
     playerBoyImg: null,
     playerBoyImg2: null,
@@ -192,9 +193,12 @@ GameEngine = Class.extend({
             bomb.update();
         }
 
+        if (this.gameover)
+            return;
+
         if (gGameEngine.bots.length == 1) {
-            console.log(gGameEngine.bots[0].id);
-            gGameEngine.restart();
+            this.gameover = true;
+            setTimeout(gGameEngine.restart, 3000);
         } else if (gGameEngine.bots.length == 0) {
             console.log("no winner");
             gGameEngine.restart();
@@ -351,7 +355,7 @@ GameEngine = Class.extend({
         this.bots = [];
 
         var personalities = {"vanilla": Personalities.Vanilla, "macho": Personalities.Macho,
-            "psycho": Personalities.Psycho, "shy": Personalities.Shy, "sneaky": Personalities.Shy};
+            "psycho": Personalities.Psycho, "shy": Personalities.Shy, "sneaky": Personalities.Sneaky};
 
         // Spawns the four agents
         if (this.botsCount >= 1) {
@@ -466,6 +470,7 @@ GameEngine = Class.extend({
     },
 
     restart: function() {
+        gameover = false;
         gInputEngine.removeAllListeners();
         gGameEngine.stage.removeAllChildren();
         gGameEngine.setup();
