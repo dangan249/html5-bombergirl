@@ -10,7 +10,7 @@ CS5100 - Direwolves Team
 
 We assume that you have an Ubuntu machine.
 
-1. How to install?
+1 . How to install?
 
 Make sure you have `npm` and `bower` installed OR you can run the commands below to install them
 
@@ -24,7 +24,8 @@ Go to the bomber girl project root and install the game dependenciese with `bowe
 bower install
 ```
 
-2. How to launch it?
+
+2 . How to launch it?
 
 Run command below in a shell
 ```
